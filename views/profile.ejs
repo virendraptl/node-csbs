@@ -8,5 +8,10 @@
     <h3>Welcome, <%= user.name%>!!!</h3>
     <h3>Mail id: <%= user.email%>!!!</h3>
     <h3>City: <%= user.city%>!!!</h3>
+    <ul>
+        <% user.frameworks.forEach((item)=>{ %>
+            <li><%= item %></li>
+        <% }) %>
+    </ul>
 </body>
 </html>

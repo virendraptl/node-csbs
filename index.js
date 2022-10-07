@@ -160,37 +160,98 @@
 
 // ********************************************************
 
+// const express = require("express");
+// const path = require("path");
+
+// const app = express();
+// const publicPath = path.join(__dirname, "public");
+
+// app.set('view engine', 'ejs')
+
+// app.get("", (_, resp) => {
+//   resp.sendFile(`${publicPath}/index.html`);
+// });
+
+// app.get("/profile", (_, resp) => {
+//     const user = {
+//         name: 'Vap',
+//         email: 'user@mail.in',
+//         city: 'Pune',
+//         frameworks: ['Angular','Vue','React']
+//     }
+//   resp.render('profile',{user});
+// });
+
+// app.get('/login',(_,resp)=>{
+//   resp.render('login')
+// })
+
+// app.get("/home", (_, resp) => {
+//   resp.sendFile(`${publicPath}/home.html`);
+// });
+
+// app.get("/about", (_, resp) => {
+//   resp.sendFile(`${publicPath}/about.html`);
+// });
+
+// app.get("*", (_, resp) => {
+//   resp.sendFile(`${publicPath}/nopage.html`);
+// });
+
+// app.listen(5000);
+
+// *******************Appl level middleware*******************************************
+
+// const express = require("express");
+// const app = express();
+
+// const reqFilter = (req, resp, next) => {
+//   if (!req.query.age) {
+//     resp.send("Please provide age!");
+//   } else if (req.query.age < 18) {
+//     resp.send("Page Not Accessible!");
+//   } else {
+//     next();
+//   }
+// };
+
+// app.use(reqFilter);
+
+// app.get("/", (req, resp) => {
+//   resp.send("This is the home page");
+// });
+
+// app.get("/users", (req, resp) => {
+//   resp.send("This is users page");
+// });
+
+// app.listen(5000);
+
+// *************************Route level middleware***********************
+
 const express = require("express");
-const path = require("path");
-
+const reqFilter = require('./middleware')
 const app = express();
-const publicPath = path.join(__dirname, "public");
+const route = express.Router()
 
-app.set('view engine', 'ejs')
+route.use(reqFilter)
 
-app.get("", (_, resp) => {
-  resp.sendFile(`${publicPath}/index.html`);
+app.get("/", (req, resp) => {
+  resp.send("This is the home page");
 });
 
-app.get("/profile", (_, resp) => {
-    const user = {
-        name: 'Vap',
-        email: 'user@mail.in',
-        city: 'Pune'
-    }
-  resp.render('profile',{user});
+app.get("/users", (req, resp) => {
+  resp.send("This is users page");
 });
 
-app.get("/home", (_, resp) => {
-  resp.sendFile(`${publicPath}/home.html`);
+route.get("/about", (req, resp) => {
+  resp.send("This is About page");
 });
 
-app.get("/about", (_, resp) => {
-  resp.sendFile(`${publicPath}/about.html`);
+route.get("/contact", (req, resp) => {
+  resp.send("This is Contact page");
 });
 
-app.get("*", (_, resp) => {
-  resp.sendFile(`${publicPath}/nopage.html`);
-});
+app.use('/',route)
 
 app.listen(5000);
